@@ -34,7 +34,7 @@ namespace Distance
         }
 
         //2 Skriv en funktion som räknar ut avståndet mellan två städer.Funktionen ska ta två strängar som parametrar och returnera en double. 
-        //Använd den första funktionen och de globala arrayvariablerna med platsnamn, latitud och longitud.
+        //Använd den första funktionen och de globala arrayvariablerna med platsnamn, latitud och longitud..
 
         static double CalculateDistance(string city1, string city2)
         {
