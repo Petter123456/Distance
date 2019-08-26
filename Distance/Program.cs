@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Distance
 {
@@ -8,33 +10,33 @@ namespace Distance
         static double[] Latitudes = new double[] { 59.3261917, 57.7010496, 59.8939529, 65.5867395, 60.11021, 52.5069312, 48.859 };
         static double[] Longitudes = new double[] { 17.7018773, 11.6136602, 10.6450348, 22.0422998, 24.7385057, 13.1445521, 2.2069765 };
 
-
         static void Main(string[] args)
         {
-            //Console.WriteLine(CalculateDistance("Stockholm", "Göteborg"));
-
             string[] theArray = { "Stockholm", "Göteborg"};
-
             Console.WriteLine(RouteDistance(theArray));
             Console.ReadKey();
-
         }
 
         static double DistanceBetween(double latitude, double longitude, double latitude2, double longitude2)
         {
-            /////hwww.it-swarm.net/sv/android/berakna-avstandet-mellan-tva-geografiska-platser/941767008/
-            double radian = Math.PI / 180;
+            ///Math.Pow = is a Math class method. This method is used to calculate a number raise to the power of some other number.
+            ///Math.Sin = is an inbuilt Math class method which returns the sine (https://sv.wikipedia.org/wiki/Sinus)of a given double value argument(specified angle)
+            ///Math.Cos = is an inbuilt Math class method which returns the cosine(https://sv.wikipedia.org/wiki/Cosinus) of a given double value argument(specified angle).
+            ///Mat.Atan2 = Math.Atan2() is an inbuilt Math class method which returns the angle whose tangent is the quotient of two specified numbers. Basically, it returns an angle θ (measured in radian) whose value lies between -π and π.
+            ///Math.Sqrt = is used to square root of the number passed as parameter to the function.
+            ///https://www.geeksforgeeks.org/
+            // https://sv.wikipedia.org/wiki/Storcirkel
 
-            double dlong = (longitude - longitude2) * radian;
-            double dlat = (latitude - latitude2) * radian;
-            double a = Math.Pow(Math.Sin(dlat / 2.0), 2) + Math.Cos(latitude2 * radian)* Math.Cos(latitude * radian) * Math.Pow(Math.Sin(dlong / 2.0), 2);
-            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
-            double d = 6367 * c;
-            return d;
+            double latitudeRadian = latitude * Math.PI / 180;
+            double latitude2Radian = latitude2 * Math.PI / 180;
+            double longtidueRadian = longitude * Math.PI / 180;
+            double longtidue2Radian = longitude2 * Math.PI / 180;
+
+            double j = Math.Acos(Math.Sin(latitudeRadian) * Math.Sin(latitude2Radian) + Math.Cos(latitudeRadian) * Math.Cos(latitude2Radian) * Math.Cos(longtidue2Radian - longtidueRadian));
+
+            return j * 6378; //jordens radie i KM 
         }
 
-        //2 Skriv en funktion som räknar ut avståndet mellan två städer.Funktionen ska ta två strängar som parametrar och returnera en double. 
-        //Använd den första funktionen och de globala arrayvariablerna med platsnamn, latitud och longitud..
 
         static double CalculateDistance(string city1, string city2)
         {
@@ -42,8 +44,6 @@ namespace Distance
             double city1Lat = 0;
             double city2Long = 0;
             double city2Lat = 0;
-
-
 
             for (int i = 0; i < Places.Length; i++)
             {
@@ -58,30 +58,39 @@ namespace Distance
                     city2Long = Longitudes[i];
                 }
             };
-
             return DistanceBetween(city1Lat, city1Long, city2Lat, city2Long);
         }
 
-        //3 Skriv en funktion som räknar ut avståndet för en rutt.Funktionen ska ta en array som parameter. Arrayen ska innehålla städer, som ska besökas i den ordning de står. 
-        //Exempel: för att mäta avståndet på rutten ["Stockholm", "Reykyavik", "Paris"] så blir det avståndet mellan Stockholm och Reykyavik plus avståndet mellan Reykyavik och Paris.
-        //Observera att avstånden ni får kommer att avvika från det rätta svaret, eftersom jordytan är böjd. 
-        //Gör gärna (frivilligt) en annan version av avståndsfunktionen som använder Haversine och räknar rätt
-        static string RouteDistance(string[] cities){
+        static double RouteDistance(String[] cities)
+        {
+            double totalDistance = 0;
 
-            var x = "";
-
-            for (int i = 0; i < cities.Length; i++)
+            for (int i = 1; i < cities.Length; i++)
             {
-                x = cities[i];
-                Console.WriteLine(cities[i]);
+                totalDistance += CalculateDistance(cities[i - 1], cities[i]);
             }
-            
-
-            return x; 
-
-            
+            return totalDistance;
         }
-      
 
+        static double Haversine(double latitude, double longitude, double latitude2, double longitude2)
+        {
+            // distance between latitudes and longitudes 
+            double dLat = (Math.PI / 180) * (latitude2 - latitude);
+            double dLon = (Math.PI / 180) * (longitude2 - longitude);
+
+            // convert to radians 
+            latitude = (Math.PI / 180) * (latitude);
+            latitude2 = (Math.PI / 180) * (latitude2);
+
+            // apply formulae https://en.wikipedia.org/wiki/Haversine_formula
+            double a = Math.Pow(
+                            Math.Sin(dLat / 2), 2) +
+                            Math.Pow(Math.Sin(dLon / 2), 2) *
+                            Math.Cos(latitude) * Math.Cos(latitude2
+                            );
+            double rad = 6371;
+            double c = 2 * Math.Asin(Math.Sqrt(a));
+            return rad * c;
+        }
     }
 }
