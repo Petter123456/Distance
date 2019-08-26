@@ -13,7 +13,7 @@ namespace Distance
         static void Main(string[] args)
         {
             string[] theArray = { "Stockholm", "Göteborg"};
-            Console.WriteLine(RouteDistance(theArray));
+            Console.WriteLine("The distance between the selected routes are: " + RouteDistance(theArray) + " Kilometers");
             Console.ReadKey();
         }
 
