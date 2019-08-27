@@ -12,8 +12,16 @@ namespace Distance
 
         static void Main(string[] args)
         {
-            string[] theArray = { "Stockholm", "Göteborg"};
-            Console.WriteLine("The distance between the selected routes are: " + RouteDistance(theArray) + " Kilometers");
+            string[] route = { "Stockholm", "Göteborg", "Oslo", "Luleå", "Helsinki", "Berlin", "Paris" };
+
+            Console.WriteLine($"{CalculateDistance("Stockholm", "Göteborg")} kilometer mellan Stockholm och Göteborg");
+            Console.WriteLine($"{CalculateDistance("Göteborg", "Oslo")} kilometer mellan Göteborg och Oslo");
+            Console.WriteLine($"{CalculateDistance("Oslo", "Luleå")} kilometer mellan Oslo och Luleå");
+            Console.WriteLine($"{CalculateDistance("Luleå", "Helsinki")} kilometer mellan Luleå och Helsinki");
+            Console.WriteLine($"{CalculateDistance("Helsinki", "Berlin")} kilometer mellan Helsinki och Berlin");
+            Console.WriteLine($"{CalculateDistance("Berlin", "Paris")} kilometer mellan Berlin och Paris");
+
+            Console.WriteLine($"{RouteDistance(route).ToString()} kilometer för hela rutten.");
             Console.ReadKey();
         }
 
