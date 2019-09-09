@@ -6,6 +6,7 @@ namespace Distance
 {
     class Program
     {
+        const int JORDENS_RADIE_KM = 6378; 
         static string[] Places = new string[] { "Stockholm", "Göteborg", "Oslo", "Luleå", "Helsinki", "Berlin", "Paris" };
         static double[] Latitudes = new double[] { 59.3261917, 57.7010496, 59.8939529, 65.5867395, 60.11021, 52.5069312, 48.859 };
         static double[] Longitudes = new double[] { 17.7018773, 11.6136602, 10.6450348, 22.0422998, 24.7385057, 13.1445521, 2.2069765 };
@@ -21,11 +22,11 @@ namespace Distance
             Console.WriteLine($"{CalculateDistance("Helsinki", "Berlin")} kilometer mellan Helsinki och Berlin");
             Console.WriteLine($"{CalculateDistance("Berlin", "Paris")} kilometer mellan Berlin och Paris");
 
-            Console.WriteLine($"{RouteDistance(route).ToString()} kilometer för hela rutten.");
+            Console.WriteLine($"{CalculateDistance(route).ToString()} kilometer för hela rutten.");
             Console.ReadKey();
         }
 
-        static double DistanceBetween(double latitude, double longitude, double latitude2, double longitude2)
+        static double CalculateDistance(double latitude, double longitude, double latitude2, double longitude2)
         {
             ///Math.Pow = is a Math class method. This method is used to calculate a number raise to the power of some other number.
             ///Math.Sin = is an inbuilt Math class method which returns the sine (https://sv.wikipedia.org/wiki/Sinus)of a given double value argument(specified angle)
@@ -42,7 +43,7 @@ namespace Distance
 
             double j = Math.Acos(Math.Sin(latitudeRadian) * Math.Sin(latitude2Radian) + Math.Cos(latitudeRadian) * Math.Cos(latitude2Radian) * Math.Cos(longtidue2Radian - longtidueRadian));
 
-            return j * 6378; //jordens radie i KM 
+            return j * JORDENS_RADIE_KM; 
         }
 
 
@@ -66,10 +67,10 @@ namespace Distance
                     city2Long = Longitudes[i];
                 }
             };
-            return DistanceBetween(city1Lat, city1Long, city2Lat, city2Long);
+            return CalculateDistance(city1Lat, city1Long, city2Lat, city2Long);
         }
 
-        static double RouteDistance(String[] cities)
+        static double CalculateDistance(String[] cities)
         {
             double totalDistance = 0;
 
